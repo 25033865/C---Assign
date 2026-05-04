@@ -3,6 +3,7 @@
 #include <string>
 #include <ctime>
 #include <sstream>
+#include <limits>
 using namespace std;
 
 // ===================== STRUCTURES =====================
@@ -263,6 +264,14 @@ void addBorrower(Borrower*& borrowers, int& borrowerCount) {
 
     cout << "\nEnter borrower ID: ";
     cin >> borrowers[borrowerCount].borrowerId;
+
+    if (cin.fail()) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Invalid borrower ID. Borrower not added.\n";
+        resizeBorrowersArray(borrowers, borrowerCount + 1, borrowerCount);
+        return;
+    }
 
     if (findBorrowerIndexById(borrowers, borrowerCount, borrowers[borrowerCount].borrowerId) != -1) {
         cout << "A borrower with this ID already exists. Borrower not added.\n";
